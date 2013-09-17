@@ -1,4 +1,4 @@
 Server:
   siteDomain: example.org
-  port: 80 
+  port: 2000 
   webSockets: false
