@@ -22,6 +22,7 @@
     <div class="sidebar pure-u">
         <header class="header">
             <hgroup>
+                <video id="video" autoplay loop muted style="height: 240px"></video>
                 <h1 class="brand-title">winterview</h1>
                 <h2 class="brand-tagline">WebRTC Video Call Recorder</h2>
             </hgroup>
@@ -29,10 +30,10 @@
             <nav class="nav">
                 <ul class="nav-list">
                     <li class="nav-item">
-                        <button id="record-video" class="pure-button pure-button-error pure-button-xlarge">Record!</button>
+                        <button id="record-video" class="pure-button pure-button-error pure-button-xlarge" style="margin-top: 6px">Record!</button>
                     </li>
                     <li>
-                        <button id="stop-recording-video" class="pure-button pure-button-error pure-button-disabled pure-button-xlarge">Stop Recording</button>
+                        <button id="stop-recording-video" class="pure-button pure-button-error pure-button-disabled pure-button-xlarge" style="margin-top: 6px">Stop Recording</button>
                     </li>
                 </ul>
             </nav>
@@ -43,7 +44,7 @@
         <div class="content">
             <!-- A wrapper for all the blog posts -->
             <div class="posts">
-                 <video id="video" autoplay loop muted></video>
+                 
             </div>
 
             <footer class="footer">
@@ -122,7 +123,6 @@
                 */
                 
                 var screen_constraints;
-
 
                 recordVideo.onclick = function() {
                     recordVideoOrGIF(true);

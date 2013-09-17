@@ -23,14 +23,14 @@ a:focus {
     position: fixed;
     top: 0;
     bottom: 0;
-    width: 20%;
+    width: 360px;
     margin-left: -20%;
     background: rgb(24, 33, 61);
     color: #fff;
 }
 
 .header {
-    margin: 50% 2em 0;
+    margin: 10% 1em 0;
     text-align: right;
 }
 
