@@ -9,7 +9,15 @@ var app = require('express').createServer()
 var config = require('config').Server;
 io.set('log level', 1);
 
- // App Stuff
+// Heroku sucks
+if(!config.webSockets){
+    io.configure(function () { 
+          io.set("transports", ["xhr-polling"]); 
+            io.set("polling duration", 10); 
+    });
+};
+
+// App Stuff
 app.use('/public', express.static(__dirname + '/public'));
 app.listen(config.port);
 app.set("view engine", "html");
