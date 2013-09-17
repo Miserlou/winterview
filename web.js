@@ -19,7 +19,7 @@ if(!config.webSockets){
 
 // App Stuff
 app.use('/public', express.static(__dirname + '/public'));
-app.listen(config.port);
+app.listen(process.env.PORT || config.port);
 app.set("view engine", "html");
 app.set("view options", {layout: false});
 app.register(".html", require("jqtpl").express);
