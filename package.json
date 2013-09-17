@@ -1,0 +1,13 @@
+{
+  "name": "winterview",
+  "description": "WebRTC Video Interview Recorder",
+  "author": "Rich Jones <rich@openwatch.net>",
+  "version": "0.1.0",
+  "dependencies": {
+    "socket.io": "0.8.x",
+    "express": "2.5.x",
+    "config": "0.4.9",
+    "jqtpl": "1.0.7"
+  },
+  "engine": "node >= 0.4.1"
+}
