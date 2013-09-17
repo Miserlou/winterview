@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="winterview">
+
+<title>winterview</title>
+<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.3.0/pure-min.css">
+<link rel="stylesheet" href="winter.css">
+    
+<script src="http://use.typekit.net/ajf8ggy.js"></script>
+<script>
+    try { Typekit.load(); } catch (e) {}
+</script>
+<script src="https://www.webrtc-experiment.com/RecordRTC.js"> </script>
+
+</head>
+<body>
+
+<div class="pure-g-r" id="layout">
+    <div class="sidebar pure-u">
+        <header class="header">
+            <hgroup>
+                <h1 class="brand-title">winterview</h1>
+                <h2 class="brand-tagline">WebRTC Video Call Recorder</h2>
+            </hgroup>
+
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <button id="record-video" class="pure-button pure-button-error pure-button-xlarge">Record!</button>
+                    </li>
+                    <li>
+                        <button id="stop-recording-video" class="pure-button pure-button-error pure-button-disabled pure-button-xlarge">Stop Recording</button>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+    </div>
+
+    <div class="pure-u-1">
+        <div class="content">
+            <!-- A wrapper for all the blog posts -->
+            <div class="posts">
+                 <video id="video" autoplay loop muted></video>
+            </div>
+
+            <footer class="footer">
+                <div class="pure-menu pure-menu-horizontal pure-menu-open">
+                    <ul>
+                        <li><a href="http://openwatch.net/">OpenWatch</a></li>
+                        <li><a href="http://github.com/Miserlou/winterview">Source Code</a></li>
+                    </ul>
+                </div>
+            </footer>
+        </div>
+    </div>
+</div>
+
+</body>
+
+<script>
+                function getByID(id) {
+                    return document.getElementById(id);
+                }
+
+                var recordVideo = getByID('record-video'),
+                    stopRecordingVideo = getByID('stop-recording-video');
+
+                var videoWidth_input = 320,
+                    videoHeight_input = 240;
+
+                var video = getByID('video');
+                var audio = getByID('audio');
+
+                var videoConstraints = {
+                    audio: false,
+                    video: {
+                        mandatory: { },
+                        optional: []
+                    }
+                };
+
+                var audioConstraints = {
+                    audio: true,
+                    video: false
+                };
+
+            </script>
+            <script>
+                var audioStream;
+                var recorder;
+
+                /*recordAudio.onclick = function() {
+                    if (!audioStream)
+                        navigator.getUserMedia(audioConstraints, function(stream) {
+                            if (window.IsChrome) stream = new window.MediaStream(stream.getAudioTracks());
+                            audioStream = stream;
+
+                            audio.src = URL.createObjectURL(audioStream);
+                            audio.play();
+
+                            // "audio" is a default type
+                            recorder = window.RecordRTC(stream, {
+                                type: 'audio'
+                            });
+                            recorder.startRecording();
+                        }, function() {
+                        });
+                    else {
+                        audio.src = URL.createObjectURL(audioStream);
+                        audio.play();
+                        if (recorder) recorder.startRecording();
+                    }
+
+                    window.isAudio = true;
+
+                    this.disabled = true;
+                    stopRecordingAudio.disabled = false;
+                };
+                */
+                
+                var screen_constraints;
+
+
+                recordVideo.onclick = function() {
+                    recordVideoOrGIF(true);
+                };
+
+                // recordGIF.onclick = function() {
+                //     isCaptureScreen();
+                //     recordVideoOrGIF(false);
+                // };
+
+                function recordVideoOrGIF(isRecordVideo) {
+                    navigator.getUserMedia(videoConstraints, function(stream) {
+                        video.src = URL.createObjectURL(stream);
+
+                        video.width = videoWidth_input.value || 320;
+                        video.height = videoHeight_input.value || 240;
+
+                        var options = {
+                            type: 'video',
+                            video: {
+                                width: videoWidth_input.value,
+                                height: videoHeight_input.value
+                            },
+                            canvas: {
+                                width: canvasWidth_input.value,
+                                height: canvasHeight_input.value
+                            }
+                        };
+
+                        recorder = window.RecordRTC(stream, options);
+                        recorder.startRecording();
+                    }, function() {
+                        if (document.getElementById('record-screen').checked) {
+                            if (location.protocol === 'http:')
+                                alert('<https> is mandatory to capture screen.');
+                            else
+                                alert('Multi-capturing of screen is not allowed. Capturing process is denied. Are you enabled flag: "Enable screen capture support in getUserMedia"?');
+                        } else
+                            alert('Webcam access is denied.');
+                    });
+
+                    window.isAudio = false;
+
+                    if (isRecordVideo) {
+                        recordVideo.disabled = true;
+                        stopRecordingVideo.disabled = false;
+                    } else {
+                        recordGIF.disabled = true;
+                        stopRecordingGIF.disabled = false;
+                    }
+                }
+
+                // stopRecordingAudio.onclick = function() {
+                //     this.disabled = true;
+                //     recordAudio.disabled = false;
+                //     audio.src = '';
+
+                //     if (recorder)
+                //         recorder.stopRecording(function(url) {
+                //             document.getElementById('audio-url-preview').innerHTML = '<a href="' + url + '" target="_blank">Recorded Audio URL</a>';
+                //         });
+                // };
+
+                stopRecordingVideo.onclick = function() {
+                    this.disabled = true;
+                    recordVideo.disabled = false;
+
+                    if (recorder)
+                        recorder.stopRecording(function(url) {
+                            document.getElementById('video-url-preview').innerHTML = '<a href="' + url + '" target="_blank">Recorded Video URL</a>';
+                        });
+                };
+
+                // stopRecordingGIF.onclick = function() {
+                //     this.disabled = true;
+                //     recordGIF.disabled = false;
+
+                //     if (recorder)
+                //         recorder.stopRecording(function(url) {
+                //             document.getElementById('video-url-preview').innerHTML = '<a href="' + url + '" target="_blank">Recorded Gif URL</a>';
+                //         });
+                // };
+            </script>
+
+</html>
